@@ -1,0 +1,38 @@
+{
+  "clock": {
+    "period": "Period",
+    "otPrefix": "OT{n}",
+    "next": "Next",
+    "tapToStart": "tap to start",
+    "running": "in play",
+    "endOfPeriod": "end of period!",
+    "resetClock": "clock"
+  },
+  "team": {
+    "home": "HOME",
+    "away": "AWAY",
+    "fouls": "Fouls",
+    "bonus": "BONUS",
+    "timeouts": "Timeouts"
+  },
+  "config": {
+    "title": "Quarter length",
+    "minutes": "min",
+    "presetFiba": "10' FIBA",
+    "presetNba": "12' NBA",
+    "overtimeNote": "Overtime periods last 5 minutes.",
+    "language": "Language",
+    "cancel": "Cancel",
+    "save": "Save"
+  },
+  "reset": {
+    "title": "New game?",
+    "body": "This clears the score, fouls and clock.",
+    "cancel": "Cancel",
+    "confirm": "Clear all"
+  },
+  "footer": {
+    "undo": "Undo",
+    "newGame": "New game"
+  }
+}

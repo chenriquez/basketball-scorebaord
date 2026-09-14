@@ -1,0 +1,140 @@
+:root {
+  --bg: #f2f4f8;
+  --panel: #ffffff;
+  --panel-dark: #101623;
+  --text: #1a2233;
+  --text-inv: #f5f7fb;
+  --muted: #66708a;
+  --border: #d8dde8;
+  --accent: #e8590c;
+  --accent-soft: #ffe8d9;
+  --danger: #c92a2a;
+  --ok: #2b8a3e;
+  --led: #ffb84d;
+  --led-red: #ff5c5c;
+  --btn: #eef1f7;
+  --btn-text: #1a2233;
+}
+:root:not([data-theme="light"]) {
+  @media (prefers-color-scheme: dark) {
+    --bg: #0b0f17;
+    --panel: #161d2b;
+    --panel-dark: #0d1320;
+    --text: #eef1f7;
+    --muted: #8b95ad;
+    --border: #2a3348;
+    --accent-soft: #3a2416;
+    --btn: #222b3d;
+    --btn-text: #eef1f7;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0b0f17;
+  --panel: #161d2b;
+  --panel-dark: #0d1320;
+  --text: #eef1f7;
+  --muted: #8b95ad;
+  --border: #2a3348;
+  --accent-soft: #3a2416;
+  --btn: #222b3d;
+  --btn-text: #eef1f7;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+html, body { height: 100%; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+#app {
+  display: flex; flex-direction: column;
+  max-width: 900px; margin: 0 auto; padding: 10px;
+  min-height: 100%;
+  user-select: none; -webkit-user-select: none;
+}
+/* ---- Barra superior: reloj y periodo ---- */
+.topbar {
+  background: var(--panel-dark); color: var(--text-inv);
+  border-radius: 14px; padding: 10px 14px;
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+.period { text-align: center; }
+.period .label { font-size: 11px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
+.period .value { font-size: 26px; font-weight: 800; color: var(--led); font-variant-numeric: tabular-nums; }
+.clock { text-align: center; flex: 1; cursor: pointer; }
+.clock .time {
+  font-size: clamp(44px, 12vw, 72px); font-weight: 800; line-height: 1;
+  color: var(--led); font-variant-numeric: tabular-nums; letter-spacing: 2px;
+}
+.clock .time.low { color: var(--led-red); }
+.clock .hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+.clockbtns { display: flex; flex-direction: column; gap: 6px; }
+.adjust { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
+.adjust button { min-width: 52px; font-variant-numeric: tabular-nums; }
+/* ---- Botones ---- */
+button {
+  border: 1px solid var(--border); background: var(--btn); color: var(--btn-text);
+  border-radius: 10px; font-size: 15px; font-weight: 700; padding: 10px 12px;
+  cursor: pointer; touch-action: manipulation;
+}
+button:active { transform: scale(.96); }
+button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+button.ghost-dark { background: #232c40; border-color: #33405c; color: var(--text-inv); }
+button.small { font-size: 13px; padding: 7px 10px; }
+/* ---- Equipos ---- */
+.teams { display: flex; gap: 10px; margin-top: 10px; flex: 1; }
+.team {
+  flex: 1; background: var(--panel); border: 1px solid var(--border);
+  border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px;
+}
+.team-name {
+  width: 100%; text-align: center; font-size: 16px; font-weight: 800;
+  border: none; background: transparent; color: var(--text); outline: none;
+}
+.score {
+  background: var(--panel-dark); border-radius: 12px; text-align: center;
+  padding: 8px 0; color: var(--led);
+  font-size: clamp(56px, 16vw, 92px); font-weight: 800; line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.pts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.pts button { font-size: 18px; padding: 14px 0; }
+.pts .minus { color: var(--danger); }
+.stat-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.stat-label { font-size: 13px; color: var(--muted); font-weight: 700; flex: 1; }
+.stat-value { font-size: 20px; font-weight: 800; min-width: 28px; text-align: center; font-variant-numeric: tabular-nums; }
+.bonus {
+  display: none; font-size: 10px; font-weight: 800; letter-spacing: 1px;
+  background: var(--danger); color: #fff; border-radius: 6px; padding: 3px 7px;
+}
+.bonus.on { display: inline-block; }
+/* ---- Pie ---- */
+.footer { display: flex; gap: 8px; margin-top: 10px; }
+.footer button { flex: 1; }
+.undo:disabled { opacity: .4; }
+/* ---- Modales ---- */
+.overlay {
+  position: fixed; inset: 0; background: rgba(5, 8, 14, .6);
+  display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50;
+}
+.modal {
+  background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
+  padding: 20px; width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 14px;
+}
+.modal h3 { font-size: 17px; text-align: center; }
+.modal .note { font-size: 12px; color: var(--muted); text-align: center; }
+.stepper { display: flex; align-items: center; justify-content: center; gap: 14px; }
+.stepper button { font-size: 22px; width: 52px; height: 52px; border-radius: 12px; }
+.stepval { font-size: 22px; font-weight: 800; min-width: 90px; text-align: center; }
+.stepval span { font-size: 30px; color: var(--accent); }
+.presets { display: flex; gap: 8px; justify-content: center; }
+.presets button { flex: 1; font-size: 13px; }
+.modal-actions { display: flex; gap: 8px; }
+.modal-actions button { flex: 1; }
+/* ---- Selector de idioma ---- */
+.languages { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+.languages button { flex: 1 1 auto; font-size: 13px; min-width: 90px; }
+.languages button.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+@media (max-width: 420px) {
+  .pts button { font-size: 16px; padding: 12px 0; }
+}

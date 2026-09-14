@@ -1,0 +1,38 @@
+{
+  "clock": {
+    "period": "Periodo",
+    "otPrefix": "P{n}",
+    "next": "Siguiente",
+    "tapToStart": "tocar para iniciar",
+    "running": "en juego",
+    "endOfPeriod": "¡fin del periodo!",
+    "resetClock": "reloj"
+  },
+  "team": {
+    "home": "LOCAL",
+    "away": "VISITA",
+    "fouls": "Faltas",
+    "bonus": "BONUS",
+    "timeouts": "T. muertos"
+  },
+  "config": {
+    "title": "Duración del cuarto",
+    "minutes": "min",
+    "presetFiba": "10' FIBA",
+    "presetNba": "12' NBA",
+    "overtimeNote": "Las prórrogas duran 5 minutos.",
+    "language": "Idioma",
+    "cancel": "Cancelar",
+    "save": "Guardar"
+  },
+  "reset": {
+    "title": "¿Nuevo partido?",
+    "body": "Se borra el marcador, las faltas y el reloj.",
+    "cancel": "Cancelar",
+    "confirm": "Borrar todo"
+  },
+  "footer": {
+    "undo": "Deshacer",
+    "newGame": "Nuevo partido"
+  }
+}

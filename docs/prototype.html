@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+<title>Basketball Scoreboard</title>
+<style>
+  :root {
+    --bg: #f2f4f8;
+    --panel: #ffffff;
+    --panel-dark: #101623;
+    --text: #1a2233;
+    --text-inv: #f5f7fb;
+    --muted: #66708a;
+    --border: #d8dde8;
+    --accent: #e8590c;
+    --accent-soft: #ffe8d9;
+    --danger: #c92a2a;
+    --ok: #2b8a3e;
+    --led: #ffb84d;
+    --led-red: #ff5c5c;
+    --btn: #eef1f7;
+    --btn-text: #1a2233;
+  }
+  :root:not([data-theme="light"]) {
+    @media (prefers-color-scheme: dark) {
+      --bg: #0b0f17;
+      --panel: #161d2b;
+      --panel-dark: #0d1320;
+      --text: #eef1f7;
+      --muted: #8b95ad;
+      --border: #2a3348;
+      --accent-soft: #3a2416;
+      --btn: #222b3d;
+      --btn-text: #eef1f7;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0b0f17;
+    --panel: #161d2b;
+    --panel-dark: #0d1320;
+    --text: #eef1f7;
+    --muted: #8b95ad;
+    --border: #2a3348;
+    --accent-soft: #3a2416;
+    --btn: #222b3d;
+    --btn-text: #eef1f7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+  html, body { height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    display: flex; flex-direction: column;
+    max-width: 900px; margin: 0 auto; padding: 10px;
+    user-select: none; -webkit-user-select: none;
+  }
+  /* ---- Barra superior: reloj y periodo ---- */
+  .topbar {
+    background: var(--panel-dark); color: var(--text-inv);
+    border-radius: 14px; padding: 10px 14px;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  .period { text-align: center; }
+  .period .label { font-size: 11px; letter-spacing: 1px; color: var(--muted); text-transform: uppercase; }
+  .period .value { font-size: 26px; font-weight: 800; color: var(--led); font-variant-numeric: tabular-nums; }
+  .clock { text-align: center; flex: 1; cursor: pointer; }
+  .clock .time {
+    font-size: clamp(44px, 12vw, 72px); font-weight: 800; line-height: 1;
+    color: var(--led); font-variant-numeric: tabular-nums; letter-spacing: 2px;
+  }
+  .clock .time.low { color: var(--led-red); }
+  .clock .hint { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .clockbtns { display: flex; flex-direction: column; gap: 6px; }
+  .adjust { display: flex; gap: 6px; justify-content: center; margin-top: 8px; }
+  .adjust button { min-width: 52px; font-variant-numeric: tabular-nums; }
+  /* ---- Botones ---- */
+  button {
+    border: 1px solid var(--border); background: var(--btn); color: var(--btn-text);
+    border-radius: 10px; font-size: 15px; font-weight: 700; padding: 10px 12px;
+    cursor: pointer; touch-action: manipulation;
+  }
+  button:active { transform: scale(.96); }
+  button.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  button.ghost-dark { background: #232c40; border-color: #33405c; color: var(--text-inv); }
+  button.small { font-size: 13px; padding: 7px 10px; }
+  /* ---- Equipos ---- */
+  .teams { display: flex; gap: 10px; margin-top: 10px; flex: 1; }
+  .team {
+    flex: 1; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 14px; padding: 12px; display: flex; flex-direction: column; gap: 10px;
+  }
+  .team-name {
+    width: 100%; text-align: center; font-size: 16px; font-weight: 800;
+    border: none; background: transparent; color: var(--text); outline: none;
+  }
+  .score {
+    background: var(--panel-dark); border-radius: 12px; text-align: center;
+    padding: 8px 0; color: var(--led);
+    font-size: clamp(56px, 16vw, 92px); font-weight: 800; line-height: 1.1;
+    font-variant-numeric: tabular-nums;
+  }
+  .pts { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .pts button { font-size: 18px; padding: 14px 0; }
+  .pts .minus { color: var(--danger); }
+  .stat-row { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+  .stat-label { font-size: 13px; color: var(--muted); font-weight: 700; flex: 1; }
+  .stat-value { font-size: 20px; font-weight: 800; min-width: 28px; text-align: center; font-variant-numeric: tabular-nums; }
+  .bonus {
+    display: none; font-size: 10px; font-weight: 800; letter-spacing: 1px;
+    background: var(--danger); color: #fff; border-radius: 6px; padding: 3px 7px;
+  }
+  .bonus.on { display: inline-block; }
+  /* ---- Pie ---- */
+  .footer { display: flex; gap: 8px; margin-top: 10px; }
+  .footer button { flex: 1; }
+  .undo:disabled { opacity: .4; }
+  /* ---- Modales ---- */
+  .overlay {
+    position: fixed; inset: 0; background: rgba(5, 8, 14, .6);
+    display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50;
+  }
+  .modal {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
+    padding: 20px; width: 100%; max-width: 340px; display: flex; flex-direction: column; gap: 14px;
+  }
+  .modal h3 { font-size: 17px; text-align: center; }
+  .modal .note { font-size: 12px; color: var(--muted); text-align: center; }
+  .stepper { display: flex; align-items: center; justify-content: center; gap: 14px; }
+  .stepper button { font-size: 22px; width: 52px; height: 52px; border-radius: 12px; }
+  .stepval { font-size: 22px; font-weight: 800; min-width: 90px; text-align: center; }
+  .stepval span { font-size: 30px; color: var(--accent); }
+  .presets { display: flex; gap: 8px; justify-content: center; }
+  .presets button { flex: 1; font-size: 13px; }
+  .modal-actions { display: flex; gap: 8px; }
+  .modal-actions button { flex: 1; }
+  @media (max-width: 420px) {
+    .pts button { font-size: 16px; padding: 12px 0; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="topbar">
+    <div class="period">
+      <div class="label">Periodo</div>
+      <div class="value" id="period">1</div>
+      <button class="ghost-dark small" id="btnNextPeriod" style="margin-top:6px">Siguiente ▸</button>
+    </div>
+    <div class="clock" id="clockBox" title="Tocar para pausar/reanudar">
+      <div class="time" id="time">10:00</div>
+      <div class="hint" id="clockHint">tocar para iniciar</div>
+      <div class="adjust" id="adjustRow">
+        <button class="ghost-dark small" data-adj="-10000">−10s</button>
+        <button class="ghost-dark small" data-adj="-1000">−1s</button>
+        <button class="ghost-dark small" data-adj="1000">+1s</button>
+        <button class="ghost-dark small" data-adj="10000">+10s</button>
+      </div>
+    </div>
+    <div class="clockbtns">
+      <button class="primary" id="btnStartPause">▶</button>
+      <button class="ghost-dark small" id="btnResetClock">⟲ reloj</button>
+      <button class="ghost-dark small" id="btnConfig">⚙ <span id="cfgLabel">10'</span></button>
+    </div>
+  </div>
+
+  <div class="teams">
+    <section class="team" id="teamA"></section>
+    <section class="team" id="teamB"></section>
+  </div>
+
+  <div class="footer">
+    <button class="undo" id="btnUndo">↩ Deshacer</button>
+    <button id="btnReset" style="color:var(--danger)">Nuevo partido</button>
+  </div>
+
+  <div class="overlay" id="overlay" hidden>
+    <div class="modal" id="modalCfg" hidden>
+      <h3>Duración del cuarto</h3>
+      <div class="stepper">
+        <button id="cfgMinus">−</button>
+        <div class="stepval"><span id="cfgVal">10</span> min</div>
+        <button id="cfgPlus">+</button>
+      </div>
+      <div class="presets">
+        <button data-preset="8">8'</button>
+        <button data-preset="10">10' FIBA</button>
+        <button data-preset="12">12' NBA</button>
+      </div>
+      <p class="note">Las prórrogas duran 5 minutos.</p>
+      <div class="modal-actions">
+        <button id="cfgCancel">Cancelar</button>
+        <button class="primary" id="cfgSave">Guardar</button>
+      </div>
+    </div>
+    <div class="modal" id="modalReset" hidden>
+      <h3>¿Nuevo partido?</h3>
+      <p class="note">Se borra el marcador, las faltas y el reloj.</p>
+      <div class="modal-actions">
+        <button id="resetCancel">Cancelar</button>
+        <button id="resetOk" style="background:var(--danger);border-color:var(--danger);color:#fff">Borrar todo</button>
+      </div>
+    </div>
+  </div>
+
+<script>
+(function () {
+  const QK = 'bball-proto-v1';
+  const DEFAULT_MIN = 10, OT_MIN = 5, BONUS_AT = 5;
+
+  const defState = () => ({
+    qMin: DEFAULT_MIN,
+    period: 1,
+    clockMs: DEFAULT_MIN * 60000,
+    running: false,
+    teams: {
+      A: { name: 'LOCAL', score: 0, fouls: 0, timeouts: 0 },
+      B: { name: 'VISITA', score: 0, fouls: 0, timeouts: 0 }
+    }
+  });
+
+  let S = load() || defState();
+  S.running = false; // nunca retomar corriendo tras recargar
+  let history = [];
+  let lastTick = null;
+  let wakeLock = null;
+
+  function load() {
+    try { const raw = localStorage.getItem(QK); return raw ? JSON.parse(raw) : null; }
+    catch (e) { return null; }
+  }
+  function save() {
+    try { localStorage.setItem(QK, JSON.stringify(S)); } catch (e) {}
+  }
+  function snapshot() {
+    history.push(JSON.stringify(S));
+    if (history.length > 60) history.shift();
+    updateUndo();
+  }
+  function undo() {
+    if (!history.length) return;
+    const wasRunning = S.running;
+    S = JSON.parse(history.pop());
+    S.running = wasRunning; // deshacer no toca el reloj en marcha
+    save(); renderAll(); updateUndo();
+  }
+  function updateUndo() {
+    document.getElementById('btnUndo').disabled = history.length === 0;
+  }
+
+  // ---------- Reloj ----------
+  function fmt(ms) {
+    const t = Math.max(0, Math.ceil(ms / 1000));
+    const m = Math.floor(t / 60), s = t % 60;
+    return String(m).padStart(2, '0') + ':' + String(s).padStart(2, '0');
+  }
+  function tick() {
+    if (!S.running) { lastTick = null; return; }
+    const now = Date.now();
+    if (lastTick != null) {
+      S.clockMs -= (now - lastTick);
+      if (S.clockMs <= 0) { S.clockMs = 0; S.running = false; buzzer(); }
+    }
+    lastTick = now;
+    renderClock(); save();
+  }
+  setInterval(tick, 120);
+
+  function toggleClock() {
+    if (S.clockMs <= 0 && !S.running) return;
+    S.running = !S.running;
+    lastTick = null;
+    if (S.running) requestWake(); else releaseWake();
+    renderClock(); save();
+  }
+  function resetClock() {
+    snapshot();
+    S.running = false;
+    S.clockMs = periodMinutes() * 60000;
+    renderClock(); save();
+  }
+  function periodMinutes() { return S.period <= 4 ? S.qMin : OT_MIN; }
+
+  function nextPeriod() {
+    snapshot();
+    S.running = false;
+    S.period += 1;
+    S.teams.A.fouls = 0; S.teams.B.fouls = 0; // faltas de equipo por periodo
+    S.clockMs = periodMinutes() * 60000;
+    vibrate(30);
+    renderAll(); save();
+  }
+
+  let cfgTemp = 10;
+  function openModal(id) {
+    document.getElementById('overlay').hidden = false;
+    document.getElementById('modalCfg').hidden = id !== 'modalCfg';
+    document.getElementById('modalReset').hidden = id !== 'modalReset';
+  }
+  function closeModals() { document.getElementById('overlay').hidden = true; }
+
+  function configLength() {
+    cfgTemp = S.qMin;
+    document.getElementById('cfgVal').textContent = cfgTemp;
+    openModal('modalCfg');
+  }
+  function setCfgTemp(n) {
+    cfgTemp = Math.min(30, Math.max(1, n));
+    document.getElementById('cfgVal').textContent = cfgTemp;
+  }
+  document.getElementById('cfgMinus').addEventListener('click', () => setCfgTemp(cfgTemp - 1));
+  document.getElementById('cfgPlus').addEventListener('click', () => setCfgTemp(cfgTemp + 1));
+  document.querySelector('.presets').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-preset]'); if (!b) return;
+    setCfgTemp(parseInt(b.dataset.preset, 10));
+  });
+  document.getElementById('cfgCancel').addEventListener('click', closeModals);
+  document.getElementById('cfgSave').addEventListener('click', () => {
+    snapshot();
+    S.qMin = cfgTemp;
+    if (!S.running && S.period <= 4) S.clockMs = cfgTemp * 60000;
+    closeModals(); renderAll(); save();
+  });
+
+  // ---------- Sonido y vibración ----------
+  function buzzer() {
+    vibrate([300, 100, 300]);
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = 'square'; o.frequency.value = 220;
+      g.gain.setValueAtTime(0.4, ctx.currentTime);
+      g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 1.1);
+      o.connect(g); g.connect(ctx.destination);
+      o.start(); o.stop(ctx.currentTime + 1.1);
+    } catch (e) {}
+    renderClock();
+  }
+  function vibrate(p) { try { navigator.vibrate && navigator.vibrate(p); } catch (e) {} }
+
+  // ---------- Pantalla encendida ----------
+  async function requestWake() {
+    try { wakeLock = await navigator.wakeLock.request('screen'); } catch (e) {}
+  }
+  function releaseWake() {
+    try { wakeLock && wakeLock.release(); wakeLock = null; } catch (e) {}
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && S.running) requestWake();
+  });
+
+  // ---------- Acciones de equipo ----------
+  function addPoints(k, n) {
+    snapshot();
+    S.teams[k].score = Math.max(0, S.teams[k].score + n);
+    vibrate(15);
+    renderTeam(k); save();
+  }
+  function addFoul(k, n) {
+    snapshot();
+    S.teams[k].fouls = Math.max(0, S.teams[k].fouls + n);
+    if (n > 0) vibrate(15);
+    renderTeam(k === 'A' ? 'A' : 'B'); renderTeam(k === 'A' ? 'B' : 'A'); save();
+  }
+  function addTimeout(k, n) {
+    snapshot();
+    S.teams[k].timeouts = Math.max(0, S.teams[k].timeouts + n);
+    renderTeam(k); save();
+  }
+  function resetGame() { openModal('modalReset'); }
+  document.getElementById('resetCancel').addEventListener('click', closeModals);
+  document.getElementById('resetOk').addEventListener('click', () => {
+    snapshot();
+    const q = S.qMin;
+    S = defState(); S.qMin = q; S.clockMs = q * 60000;
+    closeModals(); renderAll(); save();
+  });
+
+  // ---------- Render ----------
+  function renderClock() {
+    const el = document.getElementById('time');
+    el.textContent = fmt(S.clockMs);
+    el.classList.toggle('low', S.clockMs <= 60000 && S.clockMs > 0);
+    document.getElementById('clockHint').textContent =
+      S.clockMs === 0 ? '¡fin del periodo!' : (S.running ? 'en juego' : 'tocar para iniciar');
+    document.getElementById('btnStartPause').textContent = S.running ? '❚❚' : '▶';
+    document.getElementById('period').textContent = S.period <= 4 ? S.period : 'P' + (S.period - 4);
+    document.getElementById('cfgLabel').textContent = S.qMin + "'";
+  }
+
+  function teamHTML(k) {
+    const t = S.teams[k];
+    const bonus = t.fouls >= BONUS_AT;
+    return `
+      <input class="team-name" value="${t.name.replace(/"/g,'&quot;')}" maxlength="14" data-name="${k}">
+      <div class="score" id="score${k}">${t.score}</div>
+      <div class="pts">
+        <button data-a="pt" data-k="${k}" data-n="1">+1</button>
+        <button data-a="pt" data-k="${k}" data-n="2">+2</button>
+        <button data-a="pt" data-k="${k}" data-n="3">+3</button>
+        <button class="minus" data-a="pt" data-k="${k}" data-n="-1">−1</button>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">Faltas <span class="bonus ${bonus ? 'on' : ''}">BONUS</span></span>
+        <button class="small" data-a="foul" data-k="${k}" data-n="-1">−</button>
+        <span class="stat-value">${t.fouls}</span>
+        <button class="small" data-a="foul" data-k="${k}" data-n="1">+</button>
+      </div>
+      <div class="stat-row">
+        <span class="stat-label">T. muertos</span>
+        <button class="small" data-a="to" data-k="${k}" data-n="-1">−</button>
+        <span class="stat-value">${t.timeouts}</span>
+        <button class="small" data-a="to" data-k="${k}" data-n="1">+</button>
+      </div>`;
+  }
+  function renderTeam(k) {
+    document.getElementById('team' + k).innerHTML = teamHTML(k);
+  }
+  function renderAll() { renderTeam('A'); renderTeam('B'); renderClock(); }
+
+  // ---------- Eventos (delegados) ----------
+  document.querySelector('.teams').addEventListener('click', (e) => {
+    const b = e.target.closest('button'); if (!b) return;
+    const k = b.dataset.k, n = parseInt(b.dataset.n, 10);
+    if (b.dataset.a === 'pt') addPoints(k, n);
+    if (b.dataset.a === 'foul') addFoul(k, n);
+    if (b.dataset.a === 'to') addTimeout(k, n);
+  });
+  document.querySelector('.teams').addEventListener('change', (e) => {
+    const inp = e.target.closest('input[data-name]'); if (!inp) return;
+    snapshot();
+    S.teams[inp.dataset.name].name = inp.value.trim() || (inp.dataset.name === 'A' ? 'LOCAL' : 'VISITA');
+    save();
+  });
+  function adjustClock(d) {
+    snapshot();
+    const max = periodMinutes() * 60000;
+    S.clockMs = Math.min(max, Math.max(0, S.clockMs + d));
+    renderClock(); save();
+  }
+  document.getElementById('adjustRow').addEventListener('click', (e) => {
+    e.stopPropagation(); // no pausar/reanudar al ajustar
+    const b = e.target.closest('button[data-adj]'); if (!b) return;
+    adjustClock(parseInt(b.dataset.adj, 10));
+  });
+  document.getElementById('clockBox').addEventListener('click', toggleClock);
+  document.getElementById('btnStartPause').addEventListener('click', toggleClock);
+  document.getElementById('btnResetClock').addEventListener('click', resetClock);
+  document.getElementById('btnNextPeriod').addEventListener('click', nextPeriod);
+  document.getElementById('btnConfig').addEventListener('click', configLength);
+  document.getElementById('btnUndo').addEventListener('click', undo);
+  document.getElementById('btnReset').addEventListener('click', resetGame);
+
+  renderAll(); updateUndo();
+})();
+</script>
+</body>
+</html>

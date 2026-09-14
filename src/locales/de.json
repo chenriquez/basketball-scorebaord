@@ -1,0 +1,38 @@
+{
+  "clock": {
+    "period": "Viertel",
+    "otPrefix": "V{n}",
+    "next": "Weiter",
+    "tapToStart": "tippen zum Starten",
+    "running": "läuft",
+    "endOfPeriod": "Viertelende!",
+    "resetClock": "Uhr"
+  },
+  "team": {
+    "home": "HEIM",
+    "away": "GAST",
+    "fouls": "Fouls",
+    "bonus": "BONUS",
+    "timeouts": "Auszeiten"
+  },
+  "config": {
+    "title": "Viertellänge",
+    "minutes": "Min.",
+    "presetFiba": "10' FIBA",
+    "presetNba": "12' NBA",
+    "overtimeNote": "Verlängerungen dauern 5 Minuten.",
+    "language": "Sprache",
+    "cancel": "Abbrechen",
+    "save": "Speichern"
+  },
+  "reset": {
+    "title": "Neues Spiel?",
+    "body": "Punktestand, Fouls und Uhr werden gelöscht.",
+    "cancel": "Abbrechen",
+    "confirm": "Alles löschen"
+  },
+  "footer": {
+    "undo": "Rückgängig",
+    "newGame": "Neues Spiel"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "clock": {
+    "period": "Período",
+    "otPrefix": "P{n}",
+    "next": "Seguinte",
+    "tapToStart": "toque para iniciar",
+    "running": "em jogo",
+    "endOfPeriod": "fim do período!",
+    "resetClock": "relógio"
+  },
+  "team": {
+    "home": "CASA",
+    "away": "VISITANTE",
+    "fouls": "Faltas",
+    "bonus": "BÔNUS",
+    "timeouts": "Tempos",
+    "_nota": "Para pt-PT usar 'BÓNUS'; esta base es pt-BR"
+  },
+  "config": {
+    "title": "Duração do período",
+    "minutes": "min",
+    "presetFiba": "10' FIBA",
+    "presetNba": "12' NBA",
+    "overtimeNote": "As prorrogações duram 5 minutos.",
+    "language": "Idioma",
+    "cancel": "Cancelar",
+    "save": "Salvar"
+  },
+  "reset": {
+    "title": "Novo jogo?",
+    "body": "Isso apaga o placar, as faltas e o relógio.",
+    "cancel": "Cancelar",
+    "confirm": "Apagar tudo"
+  },
+  "footer": {
+    "undo": "Desfazer",
+    "newGame": "Novo jogo"
+  }
+}

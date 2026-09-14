@@ -1,0 +1,38 @@
+{
+  "clock": {
+    "period": "Période",
+    "otPrefix": "P{n}",
+    "next": "Suivant",
+    "tapToStart": "toucher pour démarrer",
+    "running": "en jeu",
+    "endOfPeriod": "fin de période !",
+    "resetClock": "chrono"
+  },
+  "team": {
+    "home": "LOCAUX",
+    "away": "VISITEURS",
+    "fouls": "Fautes",
+    "bonus": "BONUS",
+    "timeouts": "Temps morts"
+  },
+  "config": {
+    "title": "Durée du quart-temps",
+    "minutes": "min",
+    "presetFiba": "10' FIBA",
+    "presetNba": "12' NBA",
+    "overtimeNote": "Les prolongations durent 5 minutes.",
+    "language": "Langue",
+    "cancel": "Annuler",
+    "save": "Enregistrer"
+  },
+  "reset": {
+    "title": "Nouveau match ?",
+    "body": "Le score, les fautes et le chrono seront effacés.",
+    "cancel": "Annuler",
+    "confirm": "Tout effacer"
+  },
+  "footer": {
+    "undo": "Annuler l'action",
+    "newGame": "Nouveau match"
+  }
+}

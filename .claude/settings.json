@@ -1,0 +1,36 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(nohup npm run dev -- --port 5183 --strictPort)",
+      "Bash(disown)",
+      "Read(//tmp/**)",
+      "Bash(find / -maxdepth 6 -iname \"*chromium-cli*\")",
+      "Bash(npm ls *)",
+      "Read(//private/tmp/claude-501/bundled-skills/2.1.270/**)",
+      "Bash(find / -maxdepth 4 -iname \"*playwright*\")",
+      "Bash(npx --yes playwright --version)",
+      "Bash(ls ~/Library/Caches/ms-playwright 2>/dev/null; echo \"exit-status-check\")",
+      "Read(//Users/carlos/Library/Caches/ms-playwright/**)",
+      "Bash(npm init *)",
+      "Bash(node shot.js)",
+      "Bash(lsof -ti:5183 -sTCP:LISTEN)",
+      "Bash(xargs -r kill)",
+      "Bash(node -e \"console.log\\(require.resolve\\('sharp'\\)\\)\")",
+      "Bash(npx capacitor-assets *)",
+      "Bash([ ! -f \"$PROJ/android/local.properties\" ])",
+      "Bash(export ANDROID_HOME=\"$HOME/Library/Android/sdk\")",
+      "Bash(./gradlew assembleDebug)",
+      "Bash(/usr/libexec/java_home -V)",
+      "Read(//Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/**)",
+      "Bash(\"/Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java\" -version)",
+      "Bash(brew list *)",
+      "Bash(export JAVA_HOME=\"/Applications/Android Studio.app/Contents/jbr/Contents/Home\")",
+      "Bash(git init *)",
+      "Bash(git add *)",
+      "Bash(git rm *)",
+      "Bash(rm -f __TRACKED_VAR__/src/assets/vite.svg)",
+      "Bash(rmdir __TRACKED_VAR__/src/assets)",
+      "Bash(git commit -m ' *)"
+    ]
+  }
+}
