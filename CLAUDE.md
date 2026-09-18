@@ -102,6 +102,21 @@ El APK queda en `android/app/build/outputs/apk/release/app-release.apk`. Para co
 
 Recordar subir `versionCode`/`versionName` en `android/app/build.gradle` en cada release nueva — Android no deja instalar una versión con el mismo `versionCode` encima de una ya instalada.
 
+## Publicar en Google Play
+
+Google Play exige **AAB**, no APK:
+
+```bash
+cd android
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+./gradlew bundleRelease
+```
+
+Queda en `android/app/build/outputs/bundle/release/app-release.aab` (usa el mismo `keystore.properties` que el APK de release).
+
+Los assets de la ficha de la tienda (ícono 512×512, feature graphic, capturas de pantalla reales del teléfono, descripciones corta/larga) están en [`docs/store/`](docs/store/listing.md). La política de privacidad vive en un Artifact publicado — el link está en ese mismo archivo; si se actualiza, hay que reflejarlo ahí también.
+
 ## Prototipo original
 
 `docs/prototype.html` es el HTML de un solo archivo del que partió este proyecto — se conserva como referencia de diseño y comportamiento, pero no forma parte del build.
