@@ -2,6 +2,6 @@
 <resources>
     <string name="app_name">Tablero Basketball</string>
     <string name="title_activity_main">Tablero Basketball</string>
-    <string name="package_name">cl.midominio.tablero</string>
-    <string name="custom_url_scheme">cl.midominio.tablero</string>
+    <string name="package_name">cl.chenriquez.tablero</string>
+    <string name="custom_url_scheme">cl.chenriquez.tablero</string>
 </resources>

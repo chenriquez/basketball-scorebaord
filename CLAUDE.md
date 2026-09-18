@@ -49,7 +49,7 @@ Abrir el proyecto *desde* Android Studio no tiene este problema: la IDE usa su p
 npx cap open android
 ```
 
-Espera a que termine el Gradle sync inicial (puede tardar varios minutos la primera vez). El `applicationId` (`cl.midominio.tablero`), el nombre de la app y el ícono/splash ya están configurados.
+Espera a que termine el Gradle sync inicial (puede tardar varios minutos la primera vez). El `applicationId` (`cl.chenriquez.tablero`), el nombre de la app y el ícono/splash ya están configurados.
 
 ## Probar en un dispositivo físico
 

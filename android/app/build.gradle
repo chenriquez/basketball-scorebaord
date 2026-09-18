@@ -7,10 +7,10 @@ if (keystorePropertiesFile.exists()) {
 }
 
 android {
-    namespace = "cl.midominio.tablero"
+    namespace = "cl.chenriquez.tablero"
     compileSdk = rootProject.ext.compileSdkVersion
     defaultConfig {
-        applicationId "cl.midominio.tablero"
+        applicationId "cl.chenriquez.tablero"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

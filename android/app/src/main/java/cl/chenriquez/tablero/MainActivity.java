@@ -1,4 +1,4 @@
-package cl.midominio.tablero;
+package cl.chenriquez.tablero;
 
 import com.getcapacitor.BridgeActivity;
 
