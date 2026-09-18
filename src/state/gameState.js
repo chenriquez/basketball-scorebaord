@@ -1,4 +1,4 @@
-import { reactive, computed } from 'vue'
+import { reactive, computed, watch } from 'vue'
 import { Preferences } from '@capacitor/preferences'
 import { KeepAwake } from '@capacitor-community/keep-awake'
 import { lightTap, mediumTap, buzzerVibration } from '../utils/haptics'
@@ -100,7 +100,6 @@ export function toggleClock() {
   if (state.clockMs <= 0 && !state.running) return
   state.running = !state.running
   lastTick = null
-  if (state.running) requestWake(); else releaseWake()
   save(true)
 }
 
@@ -219,6 +218,14 @@ async function requestWake() {
 async function releaseWake() {
   try { await KeepAwake.allowSleep() } catch (e) {}
 }
+
+// El reloj puede detenerse desde varios lugares (fin de período, reset,
+// nuevo partido, deshacer, no solo toggleClock), así que el wake lock
+// sigue a state.running en un solo lugar en vez de repetirse en cada uno.
+watch(() => state.running, (running) => {
+  if (running) requestWake(); else releaseWake()
+})
+
 document.addEventListener('visibilitychange', () => {
   if (document.visibilityState === 'visible' && state.running) requestWake()
 })
