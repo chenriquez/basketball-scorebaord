@@ -25,3 +25,8 @@ dist-ssr
 
 # Claude Code local settings (personal, not shared)
 .claude/settings.local.json
+
+# Release signing (never commit keystore credentials)
+android/keystore.properties
+*.jks
+*.keystore

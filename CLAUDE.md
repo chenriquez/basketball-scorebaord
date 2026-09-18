@@ -72,6 +72,36 @@ npx capacitor-assets generate --android
 npx cap sync android
 ```
 
+## Build de release firmado
+
+Para generar un APK firmado que se pueda compartir e instalar en cualquier Android (sin pasar por Play Store):
+
+- El keystore vive en `~/keystores/tablero-basketball.jks` (fuera del repo, **solo en esta Mac** — no está en git ni tiene backup automático; conviene respaldarlo en algún gestor de contraseñas o almacenamiento seguro, porque si se pierde no se puede volver a firmar una actualización con la misma identidad).
+- Las credenciales están en `android/keystore.properties` (gitignored, nunca se commitea). Si ese archivo no existe, el build de release sale **sin firmar**.
+- Formato de ese archivo:
+  ```properties
+  storeFile=/Users/carlos/keystores/tablero-basketball.jks
+  storePassword=...
+  keyAlias=tablero-basketball
+  keyPassword=...
+  ```
+  (con un keystore PKCS12 — el formato por defecto de `keytool` hoy — `storePassword` y `keyPassword` son siempre iguales).
+
+Compilar:
+
+```bash
+npm run build
+npx cap sync android
+cd android
+export ANDROID_HOME="$HOME/Library/Android/sdk"
+export JAVA_HOME="/Applications/Android Studio.app/Contents/jbr/Contents/Home"
+./gradlew assembleRelease
+```
+
+El APK queda en `android/app/build/outputs/apk/release/app-release.apk`. Para compartirlo, basta con enviar ese archivo (WhatsApp, Drive, USB, etc.); quien lo reciba necesita habilitar "Instalar apps desconocidas" para la app desde la que lo abra, ya que no viene de Play Store.
+
+Recordar subir `versionCode`/`versionName` en `android/app/build.gradle` en cada release nueva — Android no deja instalar una versión con el mismo `versionCode` encima de una ya instalada.
+
 ## Prototipo original
 
 `docs/prototype.html` es el HTML de un solo archivo del que partió este proyecto — se conserva como referencia de diseño y comportamiento, pero no forma parte del build.
