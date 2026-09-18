@@ -48,10 +48,12 @@ body {
 }
 #app {
   display: flex; flex-direction: column;
-  width: 100%; max-width: 900px; margin: 0 auto; padding: 8px; gap: 8px;
+  width: 100%; max-width: 900px; margin: 0 auto; gap: 8px;
   height: 100vh; height: 100dvh;
   overflow: hidden;
   user-select: none; -webkit-user-select: none;
+  padding: max(8px, env(safe-area-inset-top)) max(8px, env(safe-area-inset-right))
+           max(8px, env(safe-area-inset-bottom)) max(8px, env(safe-area-inset-left));
 }
 /* ---- Barra superior: reloj y periodo ---- */
 .topbar {
@@ -118,7 +120,9 @@ button.small { font-size: 12px; padding: 5px 8px; }
 /* ---- Modales ---- */
 .overlay {
   position: fixed; inset: 0; background: rgba(5, 8, 14, .6);
-  display: flex; align-items: center; justify-content: center; padding: 20px; z-index: 50;
+  display: flex; align-items: center; justify-content: center; z-index: 50;
+  padding: max(20px, env(safe-area-inset-top)) max(20px, env(safe-area-inset-right))
+           max(20px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
 }
 .modal {
   background: var(--panel); border: 1px solid var(--border); border-radius: 16px;
