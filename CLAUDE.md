@@ -65,7 +65,7 @@ La orientación queda fija en **landscape** (`AndroidManifest.xml`, `MainActivit
 
 ## Regenerar ícono y splash
 
-Los archivos fuente están en `resources/icon.png` (1024×1024) y `resources/splash.png` (2732×2732) — actualmente un placeholder simple (balón naranja `#e8590c` sobre fondo oscuro `#101623`, los colores del propio diseño). Para reemplazarlos por arte definitivo: sobrescribir esos dos PNG y correr:
+Los archivos fuente están en `resources/icon.png` (1024×1024) y `resources/splash.png` (2732×2732): un balón de basketball (naranja `#e8590c` sobre fondo oscuro `#101623`, los colores del propio diseño) con "24" en ámbar (`#ffb84d`, el mismo color del reloj de la app) debajo, aludiendo al reloj de posesión. El patrón de costuras del balón usa el path del ícono "basketball" de [Font Awesome Free](https://fontawesome.com/icons/basketball) (CC BY 4.0, © Fonticons Inc.), reescalado y recoloreado. Para reemplazar el ícono/splash por arte propio: sobrescribir esos dos PNG y correr:
 
 ```bash
 npx capacitor-assets generate --android
