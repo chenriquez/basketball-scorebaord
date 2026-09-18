@@ -4,7 +4,6 @@ import { useI18n } from 'vue-i18n'
 import {
   state,
   toggleClock,
-  resetClock,
   nextPeriod,
   adjustClock,
   openConfig
@@ -44,16 +43,17 @@ function onAdjustRowClick(e) {
       <div class="time" :class="{ low: isLow }">{{ timeText }}</div>
       <div class="hint">{{ hintText }}</div>
       <div class="adjust" @click.stop="onAdjustRowClick">
+        <button class="ghost-dark small" data-adj="-60000">&minus;1m</button>
         <button class="ghost-dark small" data-adj="-10000">&minus;10s</button>
         <button class="ghost-dark small" data-adj="-1000">&minus;1s</button>
         <button class="ghost-dark small" data-adj="1000">+1s</button>
         <button class="ghost-dark small" data-adj="10000">+10s</button>
+        <button class="ghost-dark small" data-adj="60000">+1m</button>
       </div>
     </div>
 
     <div class="clockbtns">
       <button class="primary" @click="toggleClock">{{ state.running ? '❚❚' : '▶' }}</button>
-      <button class="ghost-dark small" @click="resetClock">&#8634; {{ t('clock.resetClock') }}</button>
       <button class="ghost-dark small" @click="openConfig">&#9881; {{ state.qMin }}'</button>
     </div>
   </div>

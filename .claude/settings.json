@@ -30,7 +30,11 @@
       "Bash(git rm *)",
       "Bash(rm -f __TRACKED_VAR__/src/assets/vite.svg)",
       "Bash(rmdir __TRACKED_VAR__/src/assets)",
-      "Bash(git commit -m ' *)"
+      "Bash(git commit -m ' *)",
+      "Bash(/Users/carlos/Library/Android/sdk/platform-tools/adb devices *)",
+      "Bash(/Users/carlos/Library/Android/sdk/platform-tools/adb -s R5CW32GR0PY shell dumpsys activity activities)",
+      "Bash(nohup bash -c \"cd /Users/carlos/workspace/dev/apps/tablero-basketball && npm run dev -- --port 5183 --strictPort\")",
+      "Read(//private/tmp/**)"
     ]
   }
 }

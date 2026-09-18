@@ -4,7 +4,7 @@ import GameClock from './components/GameClock.vue'
 import Scoreboard from './components/Scoreboard.vue'
 import ConfigModal from './components/ConfigModal.vue'
 import ConfirmModal from './components/ConfirmModal.vue'
-import { ui, canUndo, undo, openResetConfirm, closeModals, confirmReset } from './state/gameState'
+import { ui, canUndo, undo, resetClock, openResetConfirm, closeModals, confirmReset } from './state/gameState'
 
 const { t } = useI18n()
 </script>
@@ -15,6 +15,7 @@ const { t } = useI18n()
 
   <div class="footer">
     <button class="undo" :disabled="!canUndo" @click="undo">&#8617; {{ t('footer.undo') }}</button>
+    <button @click="resetClock">&#8634; {{ t('clock.resetClock') }}</button>
     <button style="color:var(--danger)" @click="openResetConfirm">{{ t('footer.newGame') }}</button>
   </div>
 

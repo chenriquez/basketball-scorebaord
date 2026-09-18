@@ -30,7 +30,7 @@ export const ui = reactive({
   cfgTemp: DEFAULT_MIN
 })
 
-let history = []
+const history = reactive([])
 export const canUndo = computed(() => history.length > 0)
 
 let lastTick = null
